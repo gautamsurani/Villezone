@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Villezone</string>
+    <string name="password">Password</string>
+    <string name="sign_in_instead">Sign up instead</string>
+    <string name="login_label">Create or Login your Villezone Account\nAnd get you daily needs online</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">@string/app_name</string>
+
+    <string name="title_activity_home">@string/app_name</string>
+
+    <string name="Rs">\u20B9</string>
+    <string name="my_orders">My Orders</string>
+    <string name="my_account">My Account</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="change_password">Change Password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="faq">FAQs</string>
+    <string name="faq_text">HOW CAN I CHANGE MY SHIPPING ADDRESS?\n\nBy default, the last used shipping address will be saved into to your Sample Store account. When you are checking out your order, the default shipping address will be displayed and you have the option to amend it if you need to.\n\n\nWHY MUST I MAKE PAYMENT IMMEDIATELY AT CHECKOUT?\n\nSample ordering is on ‘first-come-first-served’ basis. To ensure that you get your desired samples, it is recommended that you make your payment within 60 minutes of checking out.\n\n\nWHY IS THERE A CHECKOUT LIMIT? / WHAT ARE ALL THE CHECKOUT LIMITS?\n\nSample Store is a popular spot and gets lots of shoppers at a time. These limits are in place to make sure everyone has a good time trying and purchasing their products. So...\n\n
+- Each member is entitled to only one (1) sample order every day\n
+- Each member is entitled to one (1) bundle of sample for each product.\n
+- Your account must have sufficient points before you can checkout the sample products.\n
+- Kindly clear all pending payments before another checkout.\n\n\nHOW CAN I TRACK MY ORDERS &amp; PAYMENT?\n\nAfter logging into your account, the status of your checkout history can be found under Order History. For orders via registered postage, a tracking number (article tracking number) will be given to you after the receipt given from Singapore Post Limited (SingPost).\n\n\n</string>
+    <string name="terms_amp_condition" ><a href="http://www.villezone.com/terms-and-condition">Terms &amp; Condition</a></string>
+</resources>

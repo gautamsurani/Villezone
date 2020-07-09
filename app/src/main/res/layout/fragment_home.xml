@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/background_color"
+    android:focusedByDefault="true"
+    android:layout_height="match_parent">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+            android:paddingBottom="15dp"
+    tools:context=".fragments.HomeFragment">
+
+            <RelativeLayout
+                android:id="@+id/cvSlider"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:id="@+id/svProduct"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_height="50dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:background="#00FFFFFF"
+                            android:hint="Find any think..."
+                            android:drawableLeft="@drawable/ic_search_black_24dp"
+                            android:drawablePadding="5dp" />
+
+                        <RelativeLayout
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/cvSlider"
+                            android:background="@color/background_color"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:src="@drawable/ic_search_black_24dp"
+                                android:layout_width="match_parent"
+                                android:tint="@color/black"
+                                android:padding="11dp"
+                                android:layout_height="match_parent"/>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginBottom="15dp"
+        app:cardCornerRadius="15dp"
+        android:layout_width="match_parent"
+                android:layout_below="@+id/svProduct"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+        android:layout_height="150dp">
+
+        <com.smarteist.autoimageslider.SliderView
+            android:id="@+id/imageSlider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:sliderAnimationDuration="600"
+            app:sliderAutoCycleDirection="back_and_forth"
+            app:sliderAutoCycleEnabled="true"
+            app:sliderIndicatorAnimationDuration="600"
+            app:sliderIndicatorGravity="center_horizontal|bottom"
+            app:sliderIndicatorMargin="15dp"
+            app:sliderIndicatorOrientation="horizontal"
+            app:sliderIndicatorPadding="3dp"
+            app:sliderIndicatorRadius="2dp"
+            app:sliderIndicatorSelectedColor="#5A5A5A"
+            app:sliderIndicatorUnselectedColor="#FFF"
+            app:sliderScrollTimeInSec="1"
+            app:sliderStartAutoCycle="true" />
+
+    </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/cvSlider"
+        android:textStyle="italic"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:text="Category" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lblCategory"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="5dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lblFavoriteProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textStyle="italic"
+        android:layout_below="@+id/rvCategory"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:text="Popular Product" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFavoriteProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:layout_below="@+id/lblFavoriteProduct"
+        android:layout_marginTop="5dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/lblLatestProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textStyle="italic"
+                android:layout_below="@+id/rvFavoriteProduct"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:text="Latest Product" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLatestProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:layout_below="@+id/lblLatestProduct"
+                android:layout_marginTop="5dp" />
+
+
+</RelativeLayout>
+    </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <RelativeLayout
+        android:id="@+id/progress"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:visibility="visible" />
+    </RelativeLayout>
+</RelativeLayout>
