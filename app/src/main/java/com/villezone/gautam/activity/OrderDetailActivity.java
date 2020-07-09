@@ -341,7 +341,11 @@ public class OrderDetailActivity extends AppCompatActivity {
         orderProductAdapter.setItemClickListener(new ItemClickListener<OrderDetail>() {
             @Override
             public void onClick(OrderDetail item) {
-                startActivity(ProductDetailActivity.intent(item.getProduct().getId(), item.getProduct().getName()));
+                if(item.getProduct()!=null) {
+                    startActivity(ProductDetailActivity.intent(item.getProduct().getId(), item.getProduct().getName()));
+                }else {
+                    Toast.makeText(OrderDetailActivity.this, "Product not found!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         rvProduct.setHasFixedSize(true);

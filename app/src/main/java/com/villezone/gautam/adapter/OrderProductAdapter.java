@@ -57,11 +57,17 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
         holder.tvPrice.setText(App.get().getResources().getString(R.string.Rs) + myListData.getPrice());
         holder.tvQuantity.setText("Quantity: " + myListData.getQuantity());
 
-        if (!myListData.getProduct().getImages().isEmpty()) {
-            Glide.with(App.get())
-                    .load(myListData.getProduct().getImages().get(0))
-                    .into(holder.ivProduct);
-        } else {
+        if(myListData.getProduct()!=null) {
+            if (!myListData.getProduct().getImages().isEmpty()) {
+                Glide.with(App.get())
+                        .load(myListData.getProduct().getImages().get(0))
+                        .into(holder.ivProduct);
+            } else {
+                Glide.with(App.get())
+                        .load(R.drawable.default_product)
+                        .into(holder.ivProduct);
+            }
+        }else {
             Glide.with(App.get())
                     .load(R.drawable.default_product)
                     .into(holder.ivProduct);
