@@ -29,6 +29,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 startActivity(ForgotPasswordActivity.intent());
             }
         });
+
+        activityLoginBinding.btnLoginViaOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(LoginViaOTPActivity.intent());
+            }
+        });
     }
 
     @Override

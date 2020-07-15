@@ -16,10 +16,13 @@ import android.widget.TextView;
 
 import com.villezone.gautam.App;
 import com.villezone.gautam.R;
+import com.villezone.gautam.adapter.CategoryAdapter;
 import com.villezone.gautam.adapter.ProductAdapter;
 import com.villezone.gautam.adapter.SubCategoryAdapter;
 import com.villezone.gautam.listner.ItemClickListener;
+import com.villezone.gautam.listner.ProductItemListener;
 import com.villezone.gautam.model.CategoryData;
+import com.villezone.gautam.model.CategoryResponse;
 import com.villezone.gautam.model.Products;
 import com.villezone.gautam.model.SubCategoryResponse;
 import com.villezone.gautam.model.Sub_category;
@@ -27,6 +30,8 @@ import com.villezone.gautam.rest.ApiInterface;
 import com.villezone.gautam.rest.RetrofitInstance;
 import com.villezone.gautam.util.Constant;
 import com.google.android.material.textview.MaterialTextView;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,18 +41,14 @@ import retrofit2.Retrofit;
 public class SubCategoryActivity extends AppCompatActivity {
 
     private RelativeLayout progress;
-    private SubCategoryAdapter adapter;
-    private ProductAdapter productAdapter;
+    private CategoryAdapter adapter;
     String category_name, category_id;
-    MaterialTextView lblFavoriteProduct;
-    RecyclerView rvCategory, rvFavoriteProduct;
+    RecyclerView rvCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_category);
-
-        initComp();
 
         category_id = getIntent().getStringExtra(Constant.CATEGORY_ID);
         category_name = getIntent().getStringExtra(Constant.CATEGORY_NAME);
@@ -60,20 +61,15 @@ public class SubCategoryActivity extends AppCompatActivity {
 
         progress = findViewById(R.id.progress);
         initCategory();
-        initFavoriteProduct();
         getCategoryById();
-    }
-
-    private void initComp() {
-        lblFavoriteProduct = findViewById(R.id.lblFavoriteProduct);
     }
 
     private void initCategory() {
         rvCategory = findViewById(R.id.rvCategory);
-        adapter = new SubCategoryAdapter();
-        adapter.setItemClickListener(new ItemClickListener<Sub_category>() {
+        adapter = new CategoryAdapter();
+        adapter.setItemClickListener(new ItemClickListener<CategoryData>() {
             @Override
-            public void onClick(Sub_category item) {
+            public void onClick(CategoryData item) {
                 startActivity(ProductActivity.intent(item.getId(), item.getTitle()));
             }
         });
@@ -82,45 +78,26 @@ public class SubCategoryActivity extends AppCompatActivity {
         rvCategory.setAdapter(adapter);
     }
 
-    private void initFavoriteProduct() {
-        rvFavoriteProduct = findViewById(R.id.rvFavoriteProduct);
-        productAdapter = new ProductAdapter(false);
-        productAdapter.setItemClickListener(new ItemClickListener<Products>() {
-            @Override
-            public void onClick(Products item) {
-                startActivity(ProductDetailActivity.intent(item.getId(),item.getName()));
-            }
-        });
-        rvFavoriteProduct.setHasFixedSize(true);
-        rvFavoriteProduct.setLayoutManager(new GridLayoutManager(App.get(), 2));
-        rvFavoriteProduct.setAdapter(productAdapter);
-    }
-
     private void getCategoryById() {
         progress.setVisibility(View.VISIBLE);
         Retrofit retrofit = RetrofitInstance.getClient();
         ApiInterface apiInterface = retrofit.create(ApiInterface.class);
-        Call<SubCategoryResponse> call = apiInterface.getCategoryById(category_id);
-        call.enqueue(new Callback<SubCategoryResponse>() {
+        Call<CategoryResponse> call = apiInterface.getSubCategoryById(category_id, "");
+        call.enqueue(new Callback<CategoryResponse>() {
             @Override
-            public void onResponse(@NonNull Call<SubCategoryResponse> call, @NonNull Response<SubCategoryResponse> response) {
+            public void onResponse(@NonNull Call<CategoryResponse> call, @NonNull Response<CategoryResponse> response) {
                 progress.setVisibility(View.GONE);
                 if (response.body() != null) {
-                    CategoryData categoryData = response.body().getData();
-                    if (categoryData.getSub_category() != null) {
-                        adapter.setData(categoryData.getSub_category());
+                    List<CategoryData> categoryData = response.body().getData();
+                    if (categoryData != null) {
+                        adapter.setData(categoryData);
                         rvCategory.setVisibility(View.VISIBLE);
-                    }
-                    if (categoryData.getProducts() != null) {
-                        productAdapter.setData(categoryData.getProducts());
-                        rvFavoriteProduct.setVisibility(View.VISIBLE);
-                        lblFavoriteProduct.setVisibility(View.VISIBLE);
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<SubCategoryResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<CategoryResponse> call, @NonNull Throwable t) {
                 progress.setVisibility(View.GONE);
             }
         });

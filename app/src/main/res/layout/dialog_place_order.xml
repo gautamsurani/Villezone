@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textStyle="italic"
+
                 android:textColor="@color/black"
                 android:text="Delivered to,"/>
 
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:id="@+id/tvName"
-                android:textStyle="italic"
+
                 android:layout_marginTop="10dp"
                 android:textColor="@color/black"
                 android:text="Gautam Surani"/>
@@ -107,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textStyle="italic"
+
         android:textColor="@color/black"
         android:text="Payment Option,"/>
 
@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textStyle="italic"
+
             android:textColor="@color/black"
             android:text="Delivery Options,"/>
 
@@ -196,7 +196,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textStyle="italic"
+
         android:textColor="@color/black"
         android:text="Payment Detail,"/>
 
@@ -283,7 +283,7 @@
         android:textSize="16sp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
-        android:textStyle="italic"
+
         android:text="Expected delevery date 10/10/21"/>
 
     <com.google.android.material.textview.MaterialTextView
@@ -292,7 +292,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginStart="15dp"
-        android:textStyle="italic"
+
         android:text="Minimum cart amount Rs. 300"/>
 
 </LinearLayout>

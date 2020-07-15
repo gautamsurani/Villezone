@@ -119,7 +119,11 @@ public class SearchActivity extends AppCompatActivity {
                 if (item.getType().equals("sub-category")) {
                     startActivity(ProductActivity.intent(String.valueOf(item.getId()), item.getName()));
                 } else if (item.getType().equals("category")) {
-                    startActivity(SubCategoryActivity.intent(String.valueOf(item.getId()), item.getName()));
+                    if (item.getSub_category() == 1) {
+                        startActivity(SubCategoryActivity.intent(String.valueOf(item.getId()), item.getName()));
+                    } else {
+                        startActivity(ProductActivity.intent(String.valueOf(item.getId()), item.getName()));
+                    }
                 } else {
                     startActivity(ProductDetailActivity.intent(String.valueOf(item.getId()), item.getName()));
                 }

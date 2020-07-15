@@ -9,6 +9,10 @@ public class SearchResult {
 
     private String image;
 
+    private int sub_category;
+
+    private int products;
+
     public String getName() {
         return title;
     }
@@ -39,6 +43,30 @@ public class SearchResult {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getSub_category() {
+        return sub_category;
+    }
+
+    public void setSub_category(int sub_category) {
+        this.sub_category = sub_category;
+    }
+
+    public int getProducts() {
+        return products;
+    }
+
+    public void setProducts(int products) {
+        this.products = products;
     }
 
     @Override

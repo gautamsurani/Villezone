@@ -121,6 +121,12 @@ public class PrefsManager {
         mSharedPrefsEditor.apply();
     }
 
+    public void increaseCartCount(){
+        User_detail user_detail = App.getPreference().getUserDetails();
+        user_detail.setTotal_cart_products(user_detail.getTotal_cart_products() + 1);
+        App.getPreference().setUserDetails(user_detail);
+    }
+
     public void logout() {
         setAuthToken(null);
         setUserDetails(new User_detail());

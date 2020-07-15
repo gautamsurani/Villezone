@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
+    android:background="@color/white"
     tools:context=".fragments.HomeFragment">
 
     <include
@@ -21,14 +21,23 @@
                 android:paddingBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/background_color"
                 android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:text="Delivered to :-"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     android:padding="10dp"
@@ -39,28 +48,13 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:textStyle="italic"
-                            android:textColor="@color/black"
-                            android:text="Delivered to,"/>
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:layout_width="wrap_content"
-                            android:id="@+id/tvAddress"
-                            android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:text="10/b, Madhanand-2, chitra - 364004"/>
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:id="@+id/tvName"
-                            android:textStyle="italic"
-                            android:layout_marginTop="10dp"
                             android:textColor="@color/black"
                             android:text="Gautam Surani"/>
 
@@ -68,9 +62,38 @@
                             android:layout_width="wrap_content"
                             android:id="@+id/tvMobileNumber"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
+                            android:textSize="16sp"
                             android:textColor="@color/black"
                             android:text="9106462836"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:background="@drawable/cart_background">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:id="@+id/tvAddress"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:text="10/b, Madhanand-2, chitra - 364004"/>
 
                     </LinearLayout>
 
@@ -97,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textStyle="italic"
+
                         android:textColor="@color/black"
                         android:text="Payment Option,"/>
 
@@ -125,21 +148,20 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:padding="10dp"
-                    android:background="@drawable/cart_background"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:padding="20dp"
+                    android:background="@drawable/delivery_bg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textStyle="italic"
+                        android:textSize="16sp"
                         android:textColor="@color/black"
-                        android:text="Delivery Options,"/>
+                        android:text="Delivery Schedule,"/>
 
                     <RadioGroup
                         android:id="@+id/rgTimeSlot"
@@ -186,7 +208,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textStyle="italic"
+
                         android:textColor="@color/black"
                         android:text="Payment Detail,"/>
 
@@ -273,7 +295,7 @@
                     android:textSize="14sp"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="15dp"
-                    android:textStyle="italic"
+                    android:visibility="gone"
                     android:text="Expected delevery date 10/10/21"/>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -281,8 +303,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:layout_marginStart="15dp"
-                    android:textStyle="italic"
+                    android:layout_marginStart="20dp"
                     android:text="Minimum cart amount Rs. 300"/>
 
             </LinearLayout>

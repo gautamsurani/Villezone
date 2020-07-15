@@ -11,4 +11,6 @@ public class Constant {
     public static String ORDER = "order";
     public static String CART_TOTAL = "cart_total";
     public static String AREA_DATA = "area_data";
+
+    public static String MESSAGE = "message";
 }

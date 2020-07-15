@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:paddingTop="8dp"
             android:paddingLeft="8dp"
@@ -40,7 +40,6 @@
                 android:id="@+id/tvPrice"
                 android:paddingTop="5dp"
                 android:paddingLeft="8dp"
-                android:paddingBottom="8dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:lines="1"
@@ -57,5 +56,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/btnAddToCart"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/login_bg"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="8dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="ADD "
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:drawableTint="@color/white"
+                android:drawableRight="@drawable/product_cart" />
+
+        </RelativeLayout>
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progress"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,15 +37,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class CartActivity extends AppCompatActivity  {
+public class CartActivity extends AppCompatActivity {
 
-    private RelativeLayout progress,update_progress;
+    private RelativeLayout progress, update_progress,rlEmpty;
     RecyclerView rvCart;
     private CartAdapter cartAdapter;
-    TextView tvPlaceOrder, tvEmpty;
+    TextView tvPlaceOrder, tvShopping, tvCartTotal;
     int total = 0;
     Activity context;
     List<CartItem> cartItems;
+    LinearLayout llPlaceOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,11 @@ public class CartActivity extends AppCompatActivity  {
         progress = findViewById(R.id.progress);
         update_progress = findViewById(R.id.update_progress);
         tvPlaceOrder = findViewById(R.id.tvPlaceOrder);
-        tvEmpty = findViewById(R.id.tvEmpty);
+        rlEmpty = findViewById(R.id.rlEmpty);
+        tvShopping = findViewById(R.id.tvShopping);
+        tvCartTotal = findViewById(R.id.tvCartTotal);
+        llPlaceOrder = findViewById(R.id.llPlaceOrder);
+
         initCart();
 
         progress.setVisibility(View.VISIBLE);
@@ -72,6 +78,13 @@ public class CartActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 startActivity(OrderSummeryActivity.intent(String.valueOf(total)));
+            }
+        });
+
+        tvShopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(HomeActivity.intent());
             }
         });
     }
@@ -185,14 +198,14 @@ public class CartActivity extends AppCompatActivity  {
                 CartItem cartItem = cartItems.get(i);
                 total = total + Integer.parseInt(cartItem.getPrice());
             }
-            tvPlaceOrder.setText(App.get().getResources().getString(R.string.Rs) + total + "\nCHECK OUT");
-            tvPlaceOrder.setVisibility(View.VISIBLE);
-            tvEmpty.setVisibility(View.GONE);
+            tvCartTotal.setText(App.get().getResources().getString(R.string.Rs) + total);
+            llPlaceOrder.setVisibility(View.VISIBLE);
+            rlEmpty.setVisibility(View.GONE);
             rvCart.setVisibility(View.VISIBLE);
         } else {
             rvCart.setVisibility(View.GONE);
-            tvPlaceOrder.setVisibility(View.GONE);
-            tvEmpty.setVisibility(View.VISIBLE);
+            llPlaceOrder.setVisibility(View.GONE);
+            rlEmpty.setVisibility(View.VISIBLE);
         }
     }
 

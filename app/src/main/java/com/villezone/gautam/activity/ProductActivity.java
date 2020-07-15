@@ -4,27 +4,33 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.villezone.gautam.App;
 import com.villezone.gautam.R;
 import com.villezone.gautam.adapter.ProductAdapter;
-import com.villezone.gautam.listner.ItemClickListener;
-import com.villezone.gautam.model.CategoryData;
+import com.villezone.gautam.listner.ProductItemListener;
+import com.villezone.gautam.model.AllProductsResponse;
+import com.villezone.gautam.model.PageMeta;
 import com.villezone.gautam.model.Products;
-import com.villezone.gautam.model.SubCategoryResponse;
 import com.villezone.gautam.rest.ApiInterface;
 import com.villezone.gautam.rest.RetrofitInstance;
 import com.villezone.gautam.util.Constant;
+import com.villezone.gautam.util.HttpUtil;
 import com.villezone.gautam.util.SortProductSheetDialog;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,7 +42,12 @@ public class ProductActivity extends AppCompatActivity implements SortProductShe
     private RelativeLayout progress;
     private ProductAdapter productAdapter;
     String category_name, category_id;
-    RecyclerView rvFavoriteProduct;
+    RecyclerView rvProduct;
+    PageMeta pageMeta;
+    String current_sort = "";
+    boolean hold = false;
+    ProgressBar progressBar;
+    TextView tvEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,45 +64,95 @@ public class ProductActivity extends AppCompatActivity implements SortProductShe
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         progress = findViewById(R.id.progress);
-        initFavoriteProduct();
-        getProduct("");
+        progressBar = findViewById(R.id.progressBar);
+        tvEmpty = findViewById(R.id.tvEmpty);
+        initProduct();
+        getProduct(current_sort, 1);
     }
 
-    private void initFavoriteProduct() {
-        rvFavoriteProduct = findViewById(R.id.rvFavoriteProduct);
-        productAdapter = new ProductAdapter(false);
-        productAdapter.setItemClickListener(new ItemClickListener<Products>() {
+    private void initProduct() {
+        rvProduct = findViewById(R.id.rvFavoriteProduct);
+        productAdapter = new ProductAdapter(false, getSupportFragmentManager());
+        productAdapter.setItemClickListener(new ProductItemListener<Products>() {
             @Override
             public void onClick(Products item) {
                 startActivity(ProductDetailActivity.intent(item.getId(), item.getName()));
             }
-        });
-        rvFavoriteProduct.setHasFixedSize(true);
-        rvFavoriteProduct.setLayoutManager(new GridLayoutManager(App.get(), 2));
-        rvFavoriteProduct.setAdapter(productAdapter);
-    }
 
-    private void getProduct(String sort) {
-        progress.setVisibility(View.VISIBLE);
-        Retrofit retrofit = RetrofitInstance.getClient();
-        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
-        Call<SubCategoryResponse> call = apiInterface.getSubCategory(category_id, sort);
-        call.enqueue(new Callback<SubCategoryResponse>() {
             @Override
-            public void onResponse(@NonNull Call<SubCategoryResponse> call, @NonNull Response<SubCategoryResponse> response) {
-                progress.setVisibility(View.GONE);
-                if (response.body() != null) {
-                    CategoryData categoryData = response.body().getData();
-                    if (categoryData.getProducts() != null) {
-                        productAdapter.setData(categoryData.getProducts());
-                        rvFavoriteProduct.setVisibility(View.VISIBLE);
+            public void onCartAdded() {
+                App.getPreference().increaseCartCount();
+                setupBadge();
+            }
+        });
+        rvProduct.setHasFixedSize(true);
+        rvProduct.setLayoutManager(new GridLayoutManager(App.get(), 2));
+        rvProduct.setAdapter(productAdapter);
+
+        rvProduct.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                LinearLayoutManager layoutManager = LinearLayoutManager.class.cast(recyclerView.getLayoutManager());
+                int totalItemCount = layoutManager.getItemCount();
+                int lastVisible = layoutManager.findLastVisibleItemPosition();
+
+                boolean endHasBeenReached = lastVisible + 1 >= totalItemCount;
+                if (totalItemCount > 0 && endHasBeenReached) {
+                    if (pageMeta != null) {
+                        if (pageMeta.getCurrent_page() != pageMeta.getLast_page()) {
+                            if (!hold) {
+                                hold = true;
+                                getProduct(current_sort, pageMeta.getCurrent_page() + 1);
+                            }
+                        }
                     }
                 }
             }
+        });
+    }
+
+    private void getProduct(String sort, int page) {
+        if (page == 1) {
+            progress.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        Retrofit retrofit = RetrofitInstance.getClient();
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        Call<AllProductsResponse> call = apiInterface.getProductsByCatId(category_id, page, sort);
+        call.enqueue(new Callback<AllProductsResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AllProductsResponse> call, @NonNull Response<AllProductsResponse> response) {
+                if (response.isSuccessful()) {
+                    pageMeta = response.body().getMeta();
+                    List<Products> products = response.body().getData();
+                    Log.e("Products", "page: " + pageMeta.getCurrent_page() + " size: " + products.size());
+                    if (!products.isEmpty()) {
+                        if (page == 1) {
+                            productAdapter.setData(products);
+                        } else {
+                            productAdapter.addData(products);
+                        }
+                        rvProduct.setVisibility(View.VISIBLE);
+                        tvEmpty.setVisibility(View.GONE);
+                    } else {
+                        if (pageMeta.getCurrent_page() == 1) {
+                            tvEmpty.setVisibility(View.VISIBLE);
+                        }
+                    }
+                } else {
+                    HttpUtil.handleError(response);
+                }
+                progress.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                hold = false;
+            }
 
             @Override
-            public void onFailure(@NonNull Call<SubCategoryResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<AllProductsResponse> call, @NonNull Throwable t) {
                 progress.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                hold = false;
             }
         });
     }
@@ -168,6 +229,7 @@ public class ProductActivity extends AppCompatActivity implements SortProductShe
 
     @Override
     public void onItemClick(String item) {
-        getProduct(item);
+        current_sort = item;
+        getProduct(current_sort, 1);
     }
 }

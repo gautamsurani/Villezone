@@ -30,7 +30,7 @@ import retrofit2.Retrofit;
 public class SignupViewModel extends BaseObservable {
 
     private SignupView signupView;
-    String name, mobile_number, address, email, password, area_id, pin_code, otp;
+    String name, mobile_number, address, email, password, area_id, pin_code, otp, landmark;
 
     public void setMobileNumber(String mobileNumber) {
         mobile_number = mobileNumber;
@@ -90,6 +90,16 @@ public class SignupViewModel extends BaseObservable {
     public void setOtp(String otp) {
         this.otp = otp;
         notifyPropertyChanged(BR.otp);
+    }
+
+    @Bindable
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+        notifyPropertyChanged(BR.landmark);
     }
 
     public String getArea_id() {
@@ -247,6 +257,9 @@ public class SignupViewModel extends BaseObservable {
     }
 
     private void createAccount() {
+        if (!TextUtils.isEmpty(landmark)) {
+            address = address + ", " + landmark;
+        }
         signupView.showSubmitInfoProgress();
         Retrofit retrofit = RetrofitInstance.getClient();
         ApiInterface apiInterface = retrofit.create(ApiInterface.class);

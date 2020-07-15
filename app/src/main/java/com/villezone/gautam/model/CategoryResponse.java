@@ -5,7 +5,7 @@ import java.util.List;
 public class CategoryResponse {
     private List<CategoryData> data;
 
-    public List<CategoryData>getData() {
+    public List<CategoryData> getData() {
         return data;
     }
 

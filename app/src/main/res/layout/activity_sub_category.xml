@@ -11,7 +11,6 @@
         android:id="@+id/toolbar_layout"
         layout="@layout/toolbar" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategory"
         android:layout_width="match_parent"
@@ -21,30 +20,6 @@
         android:layout_marginRight="15dp"
         android:visibility="gone"
         android:layout_marginTop="10dp" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/lblFavoriteProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textStyle="italic|bold"
-        android:visibility="gone"
-        android:layout_below="@+id/rvCategory"
-        android:textColor="@color/black"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:textSize="22sp"
-        android:text="Products" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFavoriteProduct"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_below="@+id/lblFavoriteProduct"
-        android:layout_marginTop="5dp" />
 
     <RelativeLayout
         android:id="@+id/progress"

@@ -10,8 +10,12 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_view_list_black_24dp"
+            android:icon="@drawable/ic_order"
             android:title="@string/my_orders" />
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@drawable/ic_notifications_none_black_24dp"
+            android:title="@string/notification" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_account_circle_black_24dp"
@@ -24,7 +28,28 @@
 
         <item
             android:id="@+id/nav_faq"
-            android:icon="@drawable/ic_sms_failed_black_24dp"
+            android:icon="@drawable/return_policy"
             android:title="@string/faq" />
+
+        <item
+            android:id="@+id/nav_faq_only"
+            android:icon="@drawable/question"
+            android:title="@string/faq_only" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/info"
+            android:title="@string/faq_about" />
+
+        <item
+            android:id="@+id/nav_rate"
+            android:icon="@drawable/star"
+            android:title="@string/faq_rate" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:title="@string/logout" />
+
     </group>
 </menu>

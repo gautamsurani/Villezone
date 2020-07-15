@@ -18,6 +18,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.villezone.gautam.App;
 import com.villezone.gautam.R;
+import com.villezone.gautam.activity.HomeActivity;
+import com.villezone.gautam.activity.ProductActivity;
 import com.villezone.gautam.activity.ProductDetailActivity;
 import com.villezone.gautam.activity.SearchActivity;
 import com.villezone.gautam.activity.SubCategoryActivity;
@@ -25,6 +27,7 @@ import com.villezone.gautam.adapter.CategoryAdapter;
 import com.villezone.gautam.adapter.ProductAdapter;
 import com.villezone.gautam.adapter.SliderAdapterExample;
 import com.villezone.gautam.listner.ItemClickListener;
+import com.villezone.gautam.listner.ProductItemListener;
 import com.villezone.gautam.model.CategoryData;
 import com.villezone.gautam.model.CategoryResponse;
 import com.villezone.gautam.model.DashboardResponse;
@@ -100,10 +103,11 @@ public class HomeFragment extends Fragment implements HomeView {
     private void initCategory(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.rvCategory);
         adapter = new CategoryAdapter();
-        adapter.setItemClickListener(new ItemClickListener<CategoryData>() {
-            @Override
-            public void onClick(CategoryData item) {
+        adapter.setItemClickListener(item -> {
+            if (item.getSub_category() == 1) {
                 startActivity(SubCategoryActivity.intent(item.getId(), item.getTitle()));
+            } else {
+                startActivity(ProductActivity.intent(item.getId(), item.getTitle()));
             }
         });
         recyclerView.setHasFixedSize(true);
@@ -111,15 +115,21 @@ public class HomeFragment extends Fragment implements HomeView {
         recyclerView.setAdapter(adapter);
     }
 
-    RecyclerView rvFavoriteProduct, rvLatestProduct;
+    private RecyclerView rvFavoriteProduct, rvLatestProduct;
 
     private void initFavoriteProduct(View view) {
         rvFavoriteProduct = view.findViewById(R.id.rvFavoriteProduct);
-        productAdapter = new ProductAdapter(true);
-        productAdapter.setItemClickListener(new ItemClickListener<Products>() {
+        productAdapter = new ProductAdapter(true, getChildFragmentManager());
+        productAdapter.setItemClickListener(new ProductItemListener<Products>() {
             @Override
             public void onClick(Products item) {
                 startActivity(ProductDetailActivity.intent(item.getId(), item.getName()));
+            }
+
+            @Override
+            public void onCartAdded() {
+                App.getPreference().increaseCartCount();
+                setupBadge();
             }
         });
         rvFavoriteProduct.setHasFixedSize(true);
@@ -129,16 +139,38 @@ public class HomeFragment extends Fragment implements HomeView {
 
     private void initLatestProduct(View view) {
         rvLatestProduct = view.findViewById(R.id.rvLatestProduct);
-        latestAdapter = new ProductAdapter(true);
-        latestAdapter.setItemClickListener(new ItemClickListener<Products>() {
+        latestAdapter = new ProductAdapter(true, getChildFragmentManager());
+        latestAdapter.setItemClickListener(new ProductItemListener<Products>() {
             @Override
             public void onClick(Products item) {
                 startActivity(ProductDetailActivity.intent(item.getId(), item.getName()));
+            }
+
+            @Override
+            public void onCartAdded() {
+                App.getPreference().increaseCartCount();
+                setupBadge();
             }
         });
         rvLatestProduct.setHasFixedSize(true);
         rvLatestProduct.setLayoutManager(new LinearLayoutManager(App.get(), LinearLayoutManager.HORIZONTAL, false));
         rvLatestProduct.setAdapter(latestAdapter);
+    }
+
+    private void setupBadge() {
+        if (HomeActivity.textCartItemCount != null) {
+            int mCartItemCount = App.getPreference().getUserDetails().getTotal_cart_products();
+            if (mCartItemCount == 0) {
+                if (HomeActivity.textCartItemCount.getVisibility() != View.GONE) {
+                    HomeActivity.textCartItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                HomeActivity.textCartItemCount.setText(String.valueOf(Math.min(mCartItemCount, 99)));
+                if (HomeActivity.textCartItemCount.getVisibility() != View.VISIBLE) {
+                    HomeActivity.textCartItemCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 
     private void getCategory() {
@@ -179,23 +211,15 @@ public class HomeFragment extends Fragment implements HomeView {
                     productAdapter.setData(popularList);
                     latestAdapter.setData(latestList);
 
-                    SliderItem sliderItem1 = new SliderItem();
-                    sliderItem1.setImageUrl(dashboardResponse.getSlider_images().getSlider_image_1());
-                    sliderItem1.setDescription("Buy fresh fruit from Villezone - always delivered from the farm to your door.");
-
-                    SliderItem sliderItem2 = new SliderItem();
-                    sliderItem2.setImageUrl(dashboardResponse.getSlider_images().getSlider_image_2());
-                    sliderItem2.setDescription("Hello Surat !! all fresh Villezone.com purchases fruits and vegetables");
-
-                    SliderItem sliderItem3 = new SliderItem();
-                    sliderItem3.setImageUrl(dashboardResponse.getSlider_images().getSlider_image_3());
-                    sliderItem3.setDescription("The only thing good about summer is Mangoes!");
-
+                    List<String> stringList = dashboardResponse.getSlider_images();
                     List<SliderItem> sliderItems = new ArrayList<>();
-                    sliderItems.add(sliderItem1);
-                    sliderItems.add(sliderItem2);
-                    sliderItems.add(sliderItem3);
 
+                    for (int i = 0; i < stringList.size(); i++) {
+                        SliderItem sliderItem = new SliderItem();
+                        sliderItem.setImageUrl(stringList.get(i));
+                        sliderItem.setDescription("");
+                        sliderItems.add(sliderItem);
+                    }
                     sliderAdapterExample.renewItems(sliderItems);
 
                 } else {

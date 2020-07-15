@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.villezone.gautam.App;
 import com.villezone.gautam.R;
 import com.villezone.gautam.adapter.SliderAdapterExample;
+import com.villezone.gautam.listner.AddToCartListner;
 import com.villezone.gautam.model.BaseModel;
 import com.villezone.gautam.model.ProductDetailResponse;
 import com.villezone.gautam.model.Products;
@@ -39,7 +40,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ProductDetailActivity extends AppCompatActivity implements CartOptionSheetDialog.ItemClickListener {
+public class ProductDetailActivity extends AppCompatActivity {
     Activity context;
     TextView tvName, tvPrice, tvDesc, tvAddToCard, tvBuyNow, tvDiscountPrice;
     RelativeLayout rlProgressBar;
@@ -72,14 +73,22 @@ public class ProductDetailActivity extends AppCompatActivity implements CartOpti
                         Toast.makeText(context, "OUT OF STOCK, Currently product not available", Toast.LENGTH_LONG).show();
                         return;
                     }
+                    AddToCartListner addToCartListner = new AddToCartListner() {
+                        @Override
+                        public void onItemClick(String item) {
+                            String weight = item.substring(item.indexOf("(") + 1, item.indexOf(")"));
+                            addToCart(weight, false);
+                        }
+                    };
                     if (products.getSell_type_options() != null) {
                         CartOptionSheetDialog openBottomSheet = CartOptionSheetDialog
                                 .newInstance("Rs. " + products.getSell_type_options().get(0).getPrice() + " (" + products.getSell_type_options().get(0).getWeight() + ")"
                                         , "Rs. " + products.getSell_type_options().get(1).getPrice() + " (" + products.getSell_type_options().get(1).getWeight() + ")"
-                                        , "Rs. " + products.getSell_type_options().get(2).getPrice() + " (" + products.getSell_type_options().get(2).getWeight() + ")");
+                                        , "Rs. " + products.getSell_type_options().get(2).getPrice() + " (" + products.getSell_type_options().get(2).getWeight() + ")"
+                                        , addToCartListner);
                         openBottomSheet.show(getSupportFragmentManager(), CartOptionSheetDialog.TAG);
                     } else {
-                        addToCart(null);
+                        addToCart(null, false);
                     }
                 }
             }
@@ -93,14 +102,22 @@ public class ProductDetailActivity extends AppCompatActivity implements CartOpti
                         Toast.makeText(context, "OUT OF STOCK, Currently product not available", Toast.LENGTH_LONG).show();
                         return;
                     }
+                    AddToCartListner addToCartListner = new AddToCartListner() {
+                        @Override
+                        public void onItemClick(String item) {
+                            String weight = item.substring(item.indexOf("(") + 1, item.indexOf(")"));
+                            addToCart(weight, true);
+                        }
+                    };
                     if (products.getSell_type_options() != null) {
                         CartOptionSheetDialog openBottomSheet = CartOptionSheetDialog
                                 .newInstance("Rs. " + products.getSell_type_options().get(0).getPrice() + " (" + products.getSell_type_options().get(0).getWeight() + ")"
                                         , "Rs. " + products.getSell_type_options().get(1).getPrice() + " (" + products.getSell_type_options().get(1).getWeight() + ")"
-                                        , "Rs. " + products.getSell_type_options().get(2).getPrice() + " (" + products.getSell_type_options().get(2).getWeight() + ")");
+                                        , "Rs. " + products.getSell_type_options().get(2).getPrice() + " (" + products.getSell_type_options().get(2).getWeight() + ")"
+                                        , addToCartListner);
                         openBottomSheet.show(getSupportFragmentManager(), CartOptionSheetDialog.TAG);
                     } else {
-                        addToCart(null);
+                        addToCart(null, true);
                     }
                 }
             }
@@ -120,7 +137,7 @@ public class ProductDetailActivity extends AppCompatActivity implements CartOpti
     private void initSlider() {
         SliderView sliderView = findViewById(R.id.imageSlider);
 
-        SliderAdapterExample adapter = new SliderAdapterExample(context,true);
+        SliderAdapterExample adapter = new SliderAdapterExample(context, true);
 
         sliderView.setSliderAdapter(adapter);
 
@@ -208,13 +225,7 @@ public class ProductDetailActivity extends AppCompatActivity implements CartOpti
         return intent;
     }
 
-    @Override
-    public void onItemClick(String item) {
-        String weight = item.substring(item.indexOf("(") + 1, item.indexOf(")"));
-        addToCart(weight);
-    }
-
-    private void addToCart(String weight) {
+    private void addToCart(String weight, boolean goToCart) {
         rlProgressBar.setVisibility(View.VISIBLE);
         Retrofit retrofit = RetrofitInstance.getClient();
         ApiInterface apiInterface = retrofit.create(ApiInterface.class);
@@ -223,8 +234,14 @@ public class ProductDetailActivity extends AppCompatActivity implements CartOpti
             @Override
             public void onResponse(@NonNull Call<BaseModel> call, @NonNull Response<BaseModel> response) {
                 if (response.isSuccessful()) {
+                    if (!response.body().getData().getMessage().contains("already")) {
+                        App.getPreference().increaseCartCount();
+                        setupBadge();
+                    }
                     Toast.makeText(ProductDetailActivity.this, response.body().getData().getMessage(), Toast.LENGTH_SHORT).show();
-                    startActivity(CartActivity.intent());
+                    if (goToCart) {
+                        startActivity(CartActivity.intent());
+                    }
                 } else {
                     HttpUtil.handleError(response);
                 }

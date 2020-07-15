@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
+        android:id="@+id/nav_notification"
+        android:name="com.villezone.gautam.fragments.NotificationFragment"
+        android:label="@string/notification"
+        tools:layout="@layout/fragment_notification" />
+
+    <fragment
         android:id="@+id/nav_slideshow"
         android:name="com.villezone.gautam.fragments.MyAccountFragment"
         android:label="@string/my_account"
@@ -34,4 +40,19 @@
         android:name="com.villezone.gautam.fragments.FAQFragment"
         android:label="@string/faq"
         tools:layout="@layout/fragment_f_a_q" />
+
+    <fragment
+        android:id="@+id/nav_faq_only"
+        android:name="com.villezone.gautam.fragments.FAQOnlyFragment"
+        android:label="@string/faq_only"
+        tools:layout="@layout/fragment_f_a_q_only" />
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.villezone.gautam.fragments.AboutUsFragment"
+        android:label="@string/faq_about"
+        tools:layout="@layout/fragment_about_us" />
+
+
+
 </navigation>

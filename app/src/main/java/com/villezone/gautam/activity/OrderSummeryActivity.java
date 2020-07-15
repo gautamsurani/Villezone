@@ -91,9 +91,10 @@ public class OrderSummeryActivity extends AppCompatActivity {
 
         btnPlaceOrder.setOnClickListener(view1 -> {
             if (deliveryCharge != null) {
-                if (Integer.parseInt(cartTotal) < Integer.parseInt(deliveryCharge.getMinimum_order())) {
+                /*if (Integer.parseInt(cartTotal) < Integer.parseInt(deliveryCharge.getMinimum_order())) {
                     Toast.makeText(App.get(), "You need minimum cart amount more then Rs. " + deliveryCharge.getMinimum_order(), Toast.LENGTH_LONG).show();
-                } else if (TextUtils.isEmpty(time_slot)) {
+                } else*/
+                if (TextUtils.isEmpty(time_slot)) {
                     Toast.makeText(App.get(), "Please select Delivery Option", Toast.LENGTH_LONG).show();
                 } else {
                     lockCart();
@@ -155,9 +156,7 @@ public class OrderSummeryActivity extends AppCompatActivity {
                     User_detail user_detail = App.getPreference().getUserDetails();
                     user_detail.setTotal_cart_products(0);
                     App.getPreference().setUserDetails(user_detail);
-                    Toast.makeText(App.get(), response.body().getData().getMessage(), Toast.LENGTH_SHORT).show();
-                    startActivity(HomeActivity.intent());
-                    finish();
+                    startActivity(OrderSuccessActivity.intent(response.body().getData().getMessage()));
                 } else {
                     unlockCart();
                     HttpUtil.handleError(response);
@@ -196,7 +195,8 @@ public class OrderSummeryActivity extends AppCompatActivity {
                     User_detail user_detail = App.getPreference().getUserDetails();
                     deliveryCharge = response.body().getData();
                     tvDate.setText("Expected delivery date " + deliveryCharge.getExpected_delivery_date());
-                    tvMinimumAmount.setText("Minimum order amount Rs. " + deliveryCharge.getMinimum_order());
+                    tvMinimumAmount.setText("Minimum order amount Rs. " + deliveryCharge.getMinimum_order()
+                            + " For free delivery");
                     tvName.setText(user_detail.getName());
                     tvMobileNumber.setText(user_detail.getMobile_number());
                     tvAddress.setText(App.getPreference().getUserDetails().getAddress()

@@ -1,19 +1,20 @@
 <resources>
     <string name="app_name">Villezone</string>
     <string name="password">Password</string>
-    <string name="sign_in_instead">Sign up instead</string>
-    <string name="login_label">Create or Login your Villezone Account\nAnd get you daily needs online</string>
+    <string name="sign_in_instead">CREATE ACCOUNT</string>
+    <string name="login_label">Create or Login your Villezone account and get you daily needs online</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="menu_home">@string/app_name</string>
+    <string name="menu_home">Home</string>
 
     <string name="title_activity_home">@string/app_name</string>
 
     <string name="Rs">\u20B9</string>
     <string name="my_orders">My Orders</string>
-    <string name="my_account">My Account</string>
+    <string name="my_account">My Profile</string>
+    <string name="notification">Notification</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="change_password">Change Password</string>
@@ -21,6 +22,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="faq">Return Policy &amp; FAQs</string>
+    <string name="faq_only">FAQs</string>
+    <string name="faq_about">About Us</string>
+    <string name="faq_rate">Rate Us</string>
+    <string name="default_notification_channel_id">@string/app_name</string>
     <string name="faq_text"></string>
-    <string name="terms_amp_condition" ><a href="http://www.villezone.com/terms-and-condition">Terms &amp; Condition</a></string>
+    <string name="terms_amp_condition"><a href="http://www.villezone.com/terms-and-condition">Terms &amp; Condition</a></string>
+    <string name="logout">Logout</string>
 </resources>

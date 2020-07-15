@@ -24,4 +24,10 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="NavigationTheme" parent="AppTheme">
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="listPreferredItemHeightSmall">35dp</item><!-- menu item height- vary as u need -->
+        <item name="colorControlHighlight">#00FFFFFF</item>
+    </style>
+
 </resources>

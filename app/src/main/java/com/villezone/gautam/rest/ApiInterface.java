@@ -7,8 +7,10 @@ import com.villezone.gautam.model.BaseModel;
 import com.villezone.gautam.model.CartResponse;
 import com.villezone.gautam.model.CategoryData;
 import com.villezone.gautam.model.CategoryResponse;
+import com.villezone.gautam.model.CustomerDetailResponse;
 import com.villezone.gautam.model.DashboardResponse;
 import com.villezone.gautam.model.LoginResponse;
+import com.villezone.gautam.model.NotificationResponse;
 import com.villezone.gautam.model.OrderDetailResponse;
 import com.villezone.gautam.model.OrderResponse;
 import com.villezone.gautam.model.ProductDetailResponse;
@@ -50,12 +52,19 @@ public interface ApiInterface {
     @POST(ApiURLs.VILLE_FORGOT_SEND_OTP)
     Call<BaseModel> sendForgotOTP(@Query("mobile_number") String mobile_number);
 
+    @POST(ApiURLs.VILLE_LOGIN_SEND_OTP)
+    Call<BaseModel> sendLoginViaOTP(@Query("mobile_number") String mobile_number);
+
     @POST(ApiURLs.VILLE_SUBMIT_OTP)
     Call<BaseModel> submitOTP(@Query("mobile_number") String mobile_number
             , @Query("code") String code);
 
     @POST(ApiURLs.VILLE_FORGOT_SUBMIT_OTP)
     Call<BaseModel> submitForgotOTP(@Query("mobile_number") String mobile_number
+            , @Query("code") String code);
+
+    @POST(ApiURLs.VILLE_SUBMIT_LOGIN_OTP)
+    Call<LoginResponse> submitLoginOTP(@Query("mobile_number") String mobile_number
             , @Query("code") String code);
 
     @POST(ApiURLs.VILLE_SIGNUP_URL)
@@ -93,6 +102,11 @@ public interface ApiInterface {
     @GET(ApiURLs.VILLE_PRODUCTS)
     Call<AllProductsResponse> getAllProducts();
 
+    @GET(ApiURLs.VILLE_PRODUCTS)
+    Call<AllProductsResponse> getProductsByCatId(@Query("sub_category_id") String category_id
+            , @Query("page") int page
+            , @Query("sort_by") String sort_by);
+
     @GET(ApiURLs.VILLE_DASHBOARD_PRODUCTS)
     Call<DashboardResponse> getDashboardProducts();
 
@@ -104,6 +118,9 @@ public interface ApiInterface {
 
     @GET(ApiURLs.VILLE_SUB_CATEGORY + "/{" + CATEGORY_ID + "}")
     Call<SubCategoryResponse> getSubCategory(@Path(CATEGORY_ID) String category_id, @Query("sort_by") String sort_by);
+
+    @GET(ApiURLs.VILLE_SUB_CATEGORY)
+    Call<CategoryResponse> getSubCategoryById(@Query(CATEGORY_ID) String category_id, @Query("sort_by") String sort_by);
 
     @POST(ApiURLs.VILLE_ADD_TO_CART)
     Call<BaseModel> addToCart(@Query("product_id") String product_id
@@ -135,6 +152,9 @@ public interface ApiInterface {
     @GET(ApiURLs.VILLE_ORDERS)
     Call<OrderResponse> getAllOrders();
 
+    @GET(ApiURLs.VILLE_NOTIFICATION)
+    Call<NotificationResponse> getAllNotifications();
+
     @GET(ApiURLs.VILLE_ORDER_DETAIL + "/{" + ORDER_ID + "}" + "/details")
     Call<OrderDetailResponse> getOrderDetail(@Path(ORDER_ID) String order_id);
 
@@ -146,4 +166,7 @@ public interface ApiInterface {
 
     @GET(ApiURLs.VILLE_DOWNLOAD_INVOICE + "/{" + ORDER_ID + "}")
     Call<ResponseBody> downloadInvoice(@Path(ORDER_ID) String order_id);
+
+    @GET(ApiURLs.VILLE_SEND_FCM_TOKEN)
+    Call<LoginResponse> sendToken(@Query("device_id") String device_id);
 }

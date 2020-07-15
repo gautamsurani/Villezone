@@ -17,7 +17,7 @@ public class User_detail {
 
     private String email;
 
-    private int total_cart_products;
+    private int total_cart_products = 0;
 
     public Area getArea() {
         return area;

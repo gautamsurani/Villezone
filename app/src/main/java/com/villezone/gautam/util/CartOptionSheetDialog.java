@@ -13,21 +13,23 @@ import androidx.annotation.Nullable;
 
 import com.villezone.gautam.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.villezone.gautam.listner.AddToCartListner;
 
 public class CartOptionSheetDialog extends BottomSheetDialogFragment
         implements View.OnClickListener {
     public static final String TAG = "ActionBottomDialog";
-    private ItemClickListener mListener;
+    private AddToCartListner mListener;
     String s, s1, s2;
 
-    public CartOptionSheetDialog(String s, String s1, String s2) {
+    public CartOptionSheetDialog(String s, String s1, String s2,AddToCartListner mListener) {
+        this.mListener =mListener;
         this.s = s;
         this.s1 = s1;
         this.s2 = s2;
     }
 
-    public static CartOptionSheetDialog newInstance(String s, String s1, String s2) {
-        return new CartOptionSheetDialog(s, s1, s2);
+    public static CartOptionSheetDialog newInstance(String s, String s1, String s2,AddToCartListner mListener) {
+        return new CartOptionSheetDialog(s, s1, s2,mListener);
     }
 
     @Nullable
@@ -52,30 +54,9 @@ public class CartOptionSheetDialog extends BottomSheetDialogFragment
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof ItemClickListener) {
-            mListener = (ItemClickListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement ItemClickListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
     public void onClick(View view) {
         TextView tvSelected = (TextView) view;
         mListener.onItemClick(tvSelected.getText().toString());
         dismiss();
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(String item);
     }
 }

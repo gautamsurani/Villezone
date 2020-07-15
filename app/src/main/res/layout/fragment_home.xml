@@ -110,9 +110,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_below="@+id/cvSlider"
-        android:textStyle="italic"
         android:textColor="@color/black"
         android:textSize="20sp"
+        android:textStyle="bold"
         android:text="Category" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -132,11 +132,11 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:textStyle="italic"
+        android:textStyle="bold"
         android:layout_below="@+id/rvCategory"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:text="Popular Product" />
+        android:text="Most Discounted Product" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFavoriteProduct"
@@ -156,7 +156,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:textStyle="italic"
+                android:textStyle="bold"
                 android:layout_below="@+id/rvFavoriteProduct"
                 android:textColor="@color/black"
                 android:textSize="20sp"

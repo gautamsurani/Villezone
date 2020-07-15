@@ -77,7 +77,7 @@ public class LoginViewModel extends BaseObservable {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
-                if (response.body() != null) {
+                if (response.isSuccessful()) {
                     String authToken = response.body().getData().getAccess_token();
                     App.getPreference().setUserDetails(response.body().getData().getUser_detail());
                     App.getPreference().setAuthToken(authToken);

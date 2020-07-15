@@ -1,17 +1,27 @@
 package com.villezone.gautam.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.villezone.gautam.App;
 import com.villezone.gautam.R;
 import com.villezone.gautam.model.AreaResponse;
+import com.villezone.gautam.model.CustomerDetailResponse;
+import com.villezone.gautam.model.LoginResponse;
 import com.villezone.gautam.model.User_detail;
 import com.villezone.gautam.rest.ApiInterface;
 import com.villezone.gautam.rest.RetrofitInstance;
@@ -19,6 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.villezone.gautam.util.HttpUtil;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -53,16 +64,48 @@ public class HomeActivity extends AppCompatActivity {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.getMenu().findItem(R.id.nav_rate).setOnMenuItemClickListener(menuItem -> {
+            rateUs();
+            return false;
+        });
+        navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener(menuItem -> {
+            openLogoutDialog();
+            return false;
+        });
         View headerLayout = navigationView.getHeaderView(0);
         initNavHeader(headerLayout);
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_change_password, R.id.nav_faq)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_home
+                , R.id.nav_gallery
+                , R.id.nav_notification
+                , R.id.nav_slideshow
+                , R.id.nav_change_password
+                , R.id.nav_faq
+                , R.id.nav_faq_only
+                , R.id.nav_about
+                , R.id.nav_rate
+                , R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    private void rateUs() {
+        Uri uri = Uri.parse("market://details?id=" + App.get().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=" + App.get().getPackageName())));
+        }
     }
 
     private void initNavHeader(View view) {
@@ -72,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
         tvMobileNumber.setText(user_detail.getMobile_number());
     }
 
-    TextView textCartItemCount;
+    public static TextView textCartItemCount;
 
     @Override
     protected void onResume() {
@@ -99,7 +142,47 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        sendFCMToken();
+
         return true;
+    }
+
+    private void sendFCMToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FCM", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        sendFcmToServer(token);
+
+                    }
+                });
+    }
+
+    private void sendFcmToServer(String token) {
+        Retrofit retrofit = RetrofitInstance.getClient();
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        Call<LoginResponse> call = apiInterface.sendToken(token);
+        call.enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                if (response.isSuccessful()) {
+                    App.getPreference().setUserDetails(response.body().getData().getUser_detail());
+                    setupBadge();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+            }
+        });
     }
 
     private void setupBadge() {
@@ -122,10 +205,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_logout) {
-            openLogoutDialog();
-            return true;
-        } else if (id == R.id.action_cart) {
+        if (id == R.id.action_cart) {
             startActivity(CartActivity.intent());
             return true;
         }

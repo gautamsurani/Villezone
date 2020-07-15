@@ -10,6 +10,7 @@
 
     <item
         android:id="@+id/action_cart"
+        android:iconTint="@color/white"
         android:icon="@drawable/ic_shopping_cart_white_24dp"
         android:title="Cart"
         app:actionLayout="@layout/custom_action_item_layout"
