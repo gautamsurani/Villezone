@@ -160,6 +160,10 @@ public class SignupViewModel extends BaseObservable {
             canNext = false;
             signupView.onInvalidAddress();
         }
+        if (!isLandmarkValid()) {
+            canNext = false;
+            signupView.onInvalidLandmark();
+        }
         if (!isAreaValid()) {
             canNext = false;
             signupView.onInvalidArea();
@@ -257,9 +261,7 @@ public class SignupViewModel extends BaseObservable {
     }
 
     private void createAccount() {
-        if (!TextUtils.isEmpty(landmark)) {
-            address = address + ", " + landmark;
-        }
+        address = getAddress() + ", " + getLandmark();
         signupView.showSubmitInfoProgress();
         Retrofit retrofit = RetrofitInstance.getClient();
         ApiInterface apiInterface = retrofit.create(ApiInterface.class);
@@ -316,6 +318,10 @@ public class SignupViewModel extends BaseObservable {
 
     public boolean isAddressValid() {
         return !TextUtils.isEmpty(getAddress());
+    }
+
+    private boolean isLandmarkValid() {
+        return !TextUtils.isEmpty(getLandmark());
     }
 
     public boolean isAreaValid() {

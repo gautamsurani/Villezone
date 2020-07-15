@@ -108,6 +108,11 @@ public class SignupActivity extends AppCompatActivity implements SignupView {
     }
 
     @Override
+    public void onInvalidLandmark() {
+        activitySignupBinding.tvLandMark.setError("Please enter Landmark");
+    }
+
+    @Override
     public void onInvalidArea() {
         activitySignupBinding.areaDropdown.setError("Please select Area");
     }

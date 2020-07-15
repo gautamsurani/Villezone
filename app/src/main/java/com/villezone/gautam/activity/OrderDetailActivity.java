@@ -66,7 +66,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     Order order;
     RecyclerView rvProduct;
     OrderProductAdapter orderProductAdapter;
-    public TextView tvName, tvPrice, tvOrderDate, tvOrderStatus, tvDeliveryCharge, tvPaymentStatus, tvExpectedDelivery;
+    public TextView tvName, tvPrice, tvOrderDate, tvTotalAmount, tvOrderStatus, tvDeliveryCharge, tvPaymentStatus, tvExpectedDelivery;
     TextView tvCancel;
     RelativeLayout rlProgress;
     ProgressBar progress, progress_feedback;
@@ -94,11 +94,12 @@ public class OrderDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         tvName.setText(order.getOrder_key());
-        tvPrice.setText("Total Amount: " + App.get().getResources().getString(R.string.Rs) + order.getTotal_order_price());
+        tvPrice.setText(App.get().getResources().getString(R.string.Rs) + order.getTotal_order_price());
         tvOrderDate.setText("Order Date: " + order.getOrder_date());
         tvOrderStatus.setText("Order Status: " + order.getOrder_status());
 
-        tvDeliveryCharge.setText("Delivery Charges: " + App.get().getResources().getString(R.string.Rs) + order.getDelivery_charge());
+        tvDeliveryCharge.setText(App.get().getResources().getString(R.string.Rs) + order.getDelivery_charge());
+        tvTotalAmount.setText(App.get().getResources().getString(R.string.Rs) + order.getTotal_with_delivery_charge());
         tvPaymentStatus.setText("Payment Status: " + order.getPayment_status());
 
         if (order.getOrder_status().equalsIgnoreCase("delivered")) {
@@ -341,9 +342,9 @@ public class OrderDetailActivity extends AppCompatActivity {
         orderProductAdapter.setItemClickListener(new ItemClickListener<OrderDetail>() {
             @Override
             public void onClick(OrderDetail item) {
-                if(item.getProduct()!=null) {
+                if (item.getProduct() != null) {
                     startActivity(ProductDetailActivity.intent(item.getProduct().getId(), item.getProduct().getName()));
-                }else {
+                } else {
                     Toast.makeText(OrderDetailActivity.this, "Product not found!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -394,6 +395,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         progress_feedback = findViewById(R.id.progress_feedback);
         tvInvoice = findViewById(R.id.tvInvoice);
         llFeedback = findViewById(R.id.llFeedback);
+        tvTotalAmount = findViewById(R.id.tvTotalAmount);
     }
 
     TextView textCartItemCount;

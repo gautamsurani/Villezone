@@ -48,7 +48,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Order myListData = listdata.get(position);
         holder.tvName.setText(myListData.getOrder_key());
-        holder.tvPrice.setText("Total Amount: " + App.get().getResources().getString(R.string.Rs) + myListData.getTotal_order_price());
+        holder.tvPrice.setText("Total Amount: " + App.get().getResources().getString(R.string.Rs) + myListData.getTotal_with_delivery_charge());
         holder.tvOrderDate.setText("Order Date: " + myListData.getOrder_date());
         if (myListData.getOrder_status().equalsIgnoreCase("canceled")) {
             holder.tvOrderStatus.setTextColor(App.get().getResources().getColor(R.color.red));

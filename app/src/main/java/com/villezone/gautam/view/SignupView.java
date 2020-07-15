@@ -9,6 +9,7 @@ public interface SignupView {
     void onInvalidName();
     void onInvalidEmail();
     void onInvalidAddress();
+    void onInvalidLandmark();
     void onInvalidArea();
     void onInvalidPincode();
 

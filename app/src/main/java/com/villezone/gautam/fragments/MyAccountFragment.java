@@ -43,14 +43,14 @@ import retrofit2.Retrofit;
 public class MyAccountFragment extends Fragment {
 
     private MaterialButton btnInfoSubmit;
-    private TextInputEditText etName, etEmail, etAddress;
+    private TextInputEditText etName, etEmail, etAddress, tvLandMark;
     private AutoCompleteTextView pincodeDropdown, areaDropdown;
 
     private String[] areas;
     private String[] pincodes = new String[0];
     private List<AreaData> areaData;
 
-    private String pincode, area_id, area_name, name, email, address;
+    private String pincode, area_id, area_name, name, email, address, landmark;
 
     RelativeLayout rlProgressBar;
 
@@ -83,7 +83,14 @@ public class MyAccountFragment extends Fragment {
 
         etName.setText(App.getPreference().getUserDetails().getName());
         etEmail.setText(App.getPreference().getUserDetails().getEmail());
-        etAddress.setText(App.getPreference().getUserDetails().getAddress());
+        if (App.getPreference().getUserDetails().getAddress().contains(",")) {
+            tvLandMark.setText(App.getPreference().getUserDetails().getAddress()
+                    .substring((App.getPreference().getUserDetails().getAddress().lastIndexOf(",") + 2)));
+
+            etAddress.setText(App.getPreference().getUserDetails().getAddress().replace(", " + tvLandMark.getText().toString(), ""));
+        } else {
+            etAddress.setText(App.getPreference().getUserDetails().getAddress());
+        }
 
         btnInfoSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +99,7 @@ public class MyAccountFragment extends Fragment {
                 name = etName.getText().toString();
                 email = etEmail.getText().toString();
                 address = etAddress.getText().toString();
+                landmark = tvLandMark.getText().toString();
                 if (!isNameValid()) {
                     canNext = false;
                     etName.setError("Please enter Name");
@@ -103,6 +111,10 @@ public class MyAccountFragment extends Fragment {
                 if (!isAddressValid()) {
                     canNext = false;
                     etAddress.setError("Please enter Address");
+                }
+                if (!isLandmarkValid()) {
+                    canNext = false;
+                    tvLandMark.setError("Please enter Landmark");
                 }
                 if (!isAreaValid()) {
                     canNext = false;
@@ -123,6 +135,7 @@ public class MyAccountFragment extends Fragment {
 
     private void updateAccount() {
         rlProgressBar.setVisibility(View.VISIBLE);
+        address = address + ", " + landmark;
         Retrofit retrofit = RetrofitInstance.getClient();
         ApiInterface apiInterface = retrofit.create(ApiInterface.class);
         Call<UpdateProfileResponse> call = apiInterface.updateProfile(name
@@ -232,6 +245,10 @@ public class MyAccountFragment extends Fragment {
         return !TextUtils.isEmpty(address);
     }
 
+    private boolean isLandmarkValid() {
+        return !TextUtils.isEmpty(landmark);
+    }
+
     public boolean isAreaValid() {
         return !TextUtils.isEmpty(area_id);
     }
@@ -248,5 +265,6 @@ public class MyAccountFragment extends Fragment {
         pincodeDropdown = root.findViewById(R.id.pincode_dropdown);
         areaDropdown = root.findViewById(R.id.area_dropdown);
         rlProgressBar = root.findViewById(R.id.rlProgressBar);
+        tvLandMark = root.findViewById(R.id.tvLandMark);
     }
 }
