@@ -82,9 +82,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     };
                     if (products.getSell_type_options() != null) {
                         CartOptionSheetDialog openBottomSheet = CartOptionSheetDialog
-                                .newInstance("Rs. " + products.getSell_type_options().get(0).getPrice() + " (" + products.getSell_type_options().get(0).getWeight() + ")"
-                                        , "Rs. " + products.getSell_type_options().get(1).getPrice() + " (" + products.getSell_type_options().get(1).getWeight() + ")"
-                                        , "Rs. " + products.getSell_type_options().get(2).getPrice() + " (" + products.getSell_type_options().get(2).getWeight() + ")"
+                                .newInstance(products.getSell_type_options()
                                         , addToCartListner);
                         openBottomSheet.show(getSupportFragmentManager(), CartOptionSheetDialog.TAG);
                     } else {
@@ -111,9 +109,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     };
                     if (products.getSell_type_options() != null) {
                         CartOptionSheetDialog openBottomSheet = CartOptionSheetDialog
-                                .newInstance("Rs. " + products.getSell_type_options().get(0).getPrice() + " (" + products.getSell_type_options().get(0).getWeight() + ")"
-                                        , "Rs. " + products.getSell_type_options().get(1).getPrice() + " (" + products.getSell_type_options().get(1).getWeight() + ")"
-                                        , "Rs. " + products.getSell_type_options().get(2).getPrice() + " (" + products.getSell_type_options().get(2).getWeight() + ")"
+                                .newInstance(products.getSell_type_options()
                                         , addToCartListner);
                         openBottomSheet.show(getSupportFragmentManager(), CartOptionSheetDialog.TAG);
                     } else {

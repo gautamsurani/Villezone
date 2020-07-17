@@ -138,9 +138,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                             }
                         };
                         CartOptionSheetDialog openBottomSheet = CartOptionSheetDialog
-                                .newInstance("Rs. " + myListData.getSell_type_options().get(0).getPrice() + " (" + myListData.getSell_type_options().get(0).getWeight() + ")"
-                                        , "Rs. " + myListData.getSell_type_options().get(1).getPrice() + " (" + myListData.getSell_type_options().get(1).getWeight() + ")"
-                                        , "Rs. " + myListData.getSell_type_options().get(2).getPrice() + " (" + myListData.getSell_type_options().get(2).getWeight() + ")"
+                                .newInstance(myListData.getSell_type_options()
                                         , addToCartListner);
                         openBottomSheet.show(supportFragmentManager, CartOptionSheetDialog.TAG);
                     } else {

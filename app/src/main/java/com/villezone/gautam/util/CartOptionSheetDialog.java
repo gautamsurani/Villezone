@@ -14,22 +14,23 @@ import androidx.annotation.Nullable;
 import com.villezone.gautam.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.villezone.gautam.listner.AddToCartListner;
+import com.villezone.gautam.model.Price;
+
+import java.util.List;
 
 public class CartOptionSheetDialog extends BottomSheetDialogFragment
         implements View.OnClickListener {
     public static final String TAG = "ActionBottomDialog";
     private AddToCartListner mListener;
-    String s, s1, s2;
+    List<Price> prices;
 
-    public CartOptionSheetDialog(String s, String s1, String s2,AddToCartListner mListener) {
-        this.mListener =mListener;
-        this.s = s;
-        this.s1 = s1;
-        this.s2 = s2;
+    public CartOptionSheetDialog(List<Price> prices, AddToCartListner mListener) {
+        this.mListener = mListener;
+        this.prices = prices;
     }
 
-    public static CartOptionSheetDialog newInstance(String s, String s1, String s2,AddToCartListner mListener) {
-        return new CartOptionSheetDialog(s, s1, s2,mListener);
+    public static CartOptionSheetDialog newInstance(List<Price> prices, AddToCartListner mListener) {
+        return new CartOptionSheetDialog(prices, mListener);
     }
 
     @Nullable
@@ -44,13 +45,49 @@ public class CartOptionSheetDialog extends BottomSheetDialogFragment
         super.onViewCreated(view, savedInstanceState);
         TextView textView = view.findViewById(R.id.textView);
         textView.setOnClickListener(this);
-        textView.setText(s);
+        if (prices.size() > 0) {
+            textView.setText(prices.get(0).getPrice() + " (" + prices.get(0).getWeight() + ")");
+        } else {
+            textView.setVisibility(View.GONE);
+        }
         TextView textView2 = view.findViewById(R.id.textView2);
         textView2.setOnClickListener(this);
-        textView2.setText(s1);
+        if (prices.size() > 1) {
+            textView2.setText(prices.get(1).getPrice() + " (" + prices.get(1).getWeight() + ")");
+        } else {
+            textView2.setVisibility(View.GONE);
+        }
         TextView textView3 = view.findViewById(R.id.textView3);
         textView3.setOnClickListener(this);
-        textView3.setText(s2);
+        if (prices.size() > 2) {
+            textView3.setText(prices.get(2).getPrice() + " (" + prices.get(2).getWeight() + ")");
+        } else {
+            textView3.setVisibility(View.GONE);
+        }
+
+        TextView textView4 = view.findViewById(R.id.textView4);
+        textView4.setOnClickListener(this);
+        if (prices.size() > 3) {
+            textView4.setText(prices.get(3).getPrice() + " (" + prices.get(3).getWeight() + ")");
+        } else {
+            textView4.setVisibility(View.GONE);
+        }
+
+        TextView textView5 = view.findViewById(R.id.textView5);
+        textView5.setOnClickListener(this);
+        if (prices.size() > 4) {
+            textView5.setText(prices.get(4).getPrice() + " (" + prices.get(4).getWeight() + ")");
+        } else {
+            textView5.setVisibility(View.GONE);
+        }
+
+        TextView textView6 = view.findViewById(R.id.textView6);
+        textView6.setOnClickListener(this);
+        if (prices.size() > 5) {
+            textView6.setText(prices.get(5).getPrice() + " (" + prices.get(5).getWeight() + ")");
+        } else {
+            textView6.setVisibility(View.GONE);
+        }
     }
 
     @Override
